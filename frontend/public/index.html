@@ -11,9 +11,7 @@
         gtag('config', 'G-XR4L29X25X');
     </script>
 
-    <!-- Suppress Supabase AbortError spam -->
     <script>
-        // Catch errors at the earliest possible point
         window.addEventListener('error', function(event) {
             if (
                 event.message?.includes('signal is aborted') ||
@@ -25,7 +23,6 @@
                 return false;
             }
         }, true);
-
         window.addEventListener('unhandledrejection', function(event) {
             if (
                 event.reason?.name === 'AbortError' ||
@@ -41,53 +38,556 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#3b82f6" />
-
-    <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="CbQK1r7yMP1yTTwGmdrkviIlx6WcIgZQjqEyb-qTnRY" />
-
-    <!-- SEO Meta Tags -->
     <meta name="description"
-        content="HugPDF - Create beautiful, professional PDFs with AI. Generate LaTeX-powered documents, resumes, research papers, and more using Google Gemini AI. Built by a student, for students." />
+        content="HugPDF - AI-powered PDF generation platform. Turn natural language prompts into professional PDFs using Google Gemini AI and LaTeX. Open source and self-hostable." />
     <meta name="keywords"
-        content="PDF generator, AI PDF, LaTeX PDF, resume maker, document creator, research paper, ATS resume, free PDF, Gemini AI" />
+        content="PDF generator, AI PDF, LaTeX PDF, resume maker, document creator, research paper, open source, Gemini AI" />
     <meta name="author" content="Sarath" />
-
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hugpdf.app/" />
-    <meta property="og:title" content="HugPDF - Create Beautiful PDFs with AI" />
+    <meta property="og:title" content="HugPDF - AI-Powered PDF Generation Platform" />
     <meta property="og:description"
-        content="Generate professional LaTeX-powered PDFs instantly. Perfect for resumes, research papers, and documents. Built by a student, for students." />
+        content="Turn natural language prompts into professionally formatted PDFs using Google Gemini AI and LaTeX. Open source and self-hostable." />
     <meta property="og:image" content="https://hugpdf.app/logo.png" />
-
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://hugpdf.app/" />
-    <meta property="twitter:title" content="HugPDF - Create Beautiful PDFs with AI" />
+    <meta property="twitter:title" content="HugPDF - AI-Powered PDF Generation Platform" />
     <meta property="twitter:description"
-        content="Generate professional LaTeX-powered PDFs instantly. Perfect for resumes, research papers, and documents." />
+        content="Turn natural language prompts into professionally formatted PDFs using Google Gemini AI and LaTeX." />
     <meta property="twitter:image" content="https://hugpdf.app/logo.png" />
-
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/android-chrome-512x512.png" />
-
-    <!-- PWA Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="HugPDF" />
+    <title>HugPDF - AI-Powered PDF Generation Platform</title>
 
-    <title>HugPDF - Create Beautiful PDFs with AI | Free LaTeX PDF Generator</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+        :root {
+            --blue: #3b82f6;
+            --blue-dark: #2563eb;
+            --blue-light: #eff6ff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --green: #10b981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: #fff;
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        /* ---------- NAV ---------- */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 2rem;
+        }
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--gray-900);
+        }
+        .nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
+        .nav-brand span { font-size: 1.25rem; font-weight: 700; }
+        .nav-links { display: flex; align-items: center; gap: 0.75rem; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-blue  { background: #dbeafe; color: #1e40af; }
+        .github-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--gray-900);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .github-btn:hover { background: var(--gray-700); }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 50%, #ecfdf5 100%);
+            padding: 6rem 2rem 5rem;
+            text-align: center;
+        }
+        .hero-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+        .hero h1 {
+            font-size: clamp(2.25rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--gray-900);
+            margin-bottom: 1.25rem;
+        }
+        .hero h1 span { color: var(--blue); }
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            max-width: 640px;
+            margin: 0 auto 2.5rem;
+        }
+        .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--blue);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+        }
+        .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: #fff;
+            color: var(--gray-700);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+        .btn-secondary:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+        /* ---------- CODE BLOCK ---------- */
+        .demo { max-width: 700px; margin: 4rem auto 0; text-align: left; }
+        .demo-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+        }
+        .code-block {
+            background: var(--gray-900);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.825rem;
+            line-height: 1.9;
+            color: #e2e8f0;
+            overflow-x: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            white-space: pre;
+        }
+        .code-block .cm  { color: #718096; }
+        .code-block .cmd { color: #90cdf4; }
+        .code-block .str { color: #fbd38d; }
+
+        /* ---------- SECTIONS ---------- */
+        section { padding: 5rem 2rem; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+        .section-sub {
+            font-size: 1.05rem;
+            color: var(--gray-500);
+            max-width: 560px;
+            margin-bottom: 3rem;
+        }
+
+        /* ---------- FEATURES ---------- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-card {
+            background: #fff;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 1.75rem;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .feature-card:hover {
+            border-color: var(--blue);
+            box-shadow: 0 6px 24px rgba(59,130,246,0.1);
+            transform: translateY(-2px);
+        }
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        .feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.4rem; }
+        .feature-card p  { font-size: 0.9rem; color: var(--gray-500); }
+
+        /* ---------- OPEN CORE ---------- */
+        .oc-section { background: var(--gray-50); }
+        .oc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 640px) { .oc-grid { grid-template-columns: 1fr; } }
+        .oc-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.75rem;
+            border: 1.5px solid var(--gray-200);
+        }
+        .oc-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .oc-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .oc-card li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+        .oc-card li .chk { color: var(--green); font-weight: 700; flex-shrink: 0; }
+        .oc-card li .lck { color: #f59e0b; font-weight: 700; flex-shrink: 0; }
+        code { font-family: monospace; background: var(--gray-100); padding: 1px 5px; border-radius: 4px; font-size: 0.85em; }
+
+        /* ---------- TECH STACK ---------- */
+        .tech-pills { display: flex; flex-wrap: wrap; gap: 12px; }
+        .tech-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--gray-50);
+            border: 1.5px solid var(--gray-200);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        /* ---------- GITHUB CTA ---------- */
+        .cta-section {
+            background: var(--gray-900);
+            color: #fff;
+            text-align: center;
+        }
+        .cta-section .section-title { color: #fff; }
+        .cta-section .section-sub   { color: var(--gray-400); margin: 0 auto 2rem; }
+        .github-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: #fff;
+            color: var(--gray-900);
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+        }
+        .github-cta:hover { background: var(--gray-100); transform: translateY(-2px); }
+        .star-note { margin-top: 1rem; font-size: 0.875rem; color: var(--gray-400); }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            border-top: 1px solid var(--gray-200);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--gray-400);
+        }
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+        footer a { color: var(--gray-500); text-decoration: none; }
+        footer a:hover { color: var(--blue); }
+
+        @media (max-width: 600px) {
+            .nav-links .badge { display: none; }
+            .demo { margin-top: 2.5rem; }
+        }
+    </style>
 </head>
 
 <body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <a class="nav-brand" href="#">
+                <img src="%PUBLIC_URL%/logo.png" alt="HugPDF" onerror="this.style.display='none'" />
+                <span>HugPDF</span>
+            </a>
+            <div class="nav-links">
+                <span class="badge badge-green">&#10003; Open Source</span>
+                <span class="badge badge-blue">MIT License</span>
+                <a class="github-btn" href="https://github.com/i-am-sarath/hug-pdf" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badges">
+            <span class="badge badge-blue">AI-Powered</span>
+            <span class="badge badge-green">Open Core · MIT</span>
+            <span class="badge" style="background:#fef3c7;color:#92400e;">Google Gemini AI</span>
+            <span class="badge" style="background:#f3e8ff;color:#6b21a8;">LaTeX Engine</span>
+        </div>
+
+        <h1>Turn any prompt into a<br><span>professional PDF</span></h1>
+        <p>
+            HugPDF is an open-source, AI-powered PDF generation platform. Describe what you need in plain English —
+            Gemini AI converts it to LaTeX and compiles a pixel-perfect document instantly.
+        </p>
+
+        <div class="hero-actions">
+            <a class="btn-primary" href="https://github.com/i-am-sarath/hug-pdf" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                View on GitHub
+            </a>
+            <a class="btn-secondary" href="https://github.com/i-am-sarath/hug-pdf#readme" target="_blank" rel="noopener">
+                Read the Docs
+            </a>
+        </div>
+
+        <div class="demo">
+            <div class="demo-label">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                Self-host in minutes with your own API keys
+            </div>
+            <div class="code-block"><span class="cm"># 1. Clone</span>
+<span class="cmd">git clone</span> https://github.com/i-am-sarath/hug-pdf.git &amp;&amp; cd hug-pdf
+
+<span class="cm"># 2. Configure — add your Gemini + Supabase keys</span>
+<span class="cmd">cp</span> backend/.env.example backend/.env
+
+<span class="cm"># 3. Run backend + frontend</span>
+<span class="cmd">uvicorn</span> server:app --reload --port 8000
+<span class="cmd">npm start</span>                         <span class="cm"># http://localhost:3000</span>
+
+<span class="cm"># 4. Generate a PDF via API</span>
+<span class="cmd">curl</span> -X POST http://localhost:8000/api/v1/generate \
+  -H <span class="str">"Authorization: Bearer YOUR_API_KEY"</span> \
+  -d <span class="str">'{"prompt": "Resume for a senior software engineer"}'</span> \
+  --output resume.pdf</div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section>
+        <div class="section-inner">
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Everything you need to generate PDFs with AI</h2>
+            <p class="section-sub">Built with React 18, FastAPI, Google Gemini 1.5 Pro, and LaTeX for pixel-perfect output.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:#dbeafe;">🤖</div>
+                    <h3>AI-Powered Generation</h3>
+                    <p>Describe what you need in plain English. Gemini AI translates it to LaTeX and compiles a pixel-perfect PDF automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:#d1fae5;">📄</div>
+                    <h3>Multiple Document Modes</h3>
+                    <p><strong>Normal</strong> (1–5 pages) · <strong>Research</strong> (10–15 pages with citations) · <strong>E-book</strong> (20–50 pages).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:#f3e8ff;">⚡</div>
+                    <h3>REST API v1</h3>
+                    <p>One POST request, one PDF. Integrates easily with Make.com, n8n, Zapier, and any HTTP-capable workflow.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:#fef3c7;">🔑</div>
+                    <h3>API Key Management</h3>
+                    <p>Create, list, and revoke API keys from the developer dashboard. Rate limiting and usage tracking built in.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:#fee2e2;">🏠</div>
+                    <h3>Fully Self-Hostable</h3>
+                    <p>Run everything on your own servers. Bring your Gemini API key and Supabase project — no vendor lock-in.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background:#ecfdf5;">📊</div>
+                    <h3>Document Dashboard</h3>
+                    <p>View, continue, and re-download previously generated PDFs from a clean, simple dashboard interface.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OPEN CORE -->
+    <section class="oc-section">
+        <div class="section-inner">
+            <span class="section-tag">Open Core Model</span>
+            <h2 class="section-title">Open source at heart</h2>
+            <p class="section-sub">The core is MIT-licensed. Self-host it free with your own API keys.</p>
+
+            <div class="oc-grid">
+                <div class="oc-card">
+                    <h3><span style="color:var(--green);font-size:1.1rem;">⊕</span> Open Source (MIT)</h3>
+                    <ul>
+                        <li><span class="chk">✓</span> React 18 frontend — all pages &amp; components</li>
+                        <li><span class="chk">✓</span> Prompt → LaTeX engine (Gemini AI integration)</li>
+                        <li><span class="chk">✓</span> Standard PDF templates (Normal, Research, E-book)</li>
+                        <li><span class="chk">✓</span> LaTeX → PDF compilation pipeline</li>
+                        <li><span class="chk">✓</span> API key management (full CRUD)</li>
+                        <li><span class="chk">✓</span> REST API v1 (<code>/api/v1/generate</code>)</li>
+                        <li><span class="chk">✓</span> Blog &amp; API documentation pages</li>
+                    </ul>
+                </div>
+                <div class="oc-card">
+                    <h3><span style="color:#f59e0b;font-size:1.1rem;">⊙</span> Managed Service Only</h3>
+                    <ul>
+                        <li><span class="lck">·</span> Billing &amp; credit system</li>
+                        <li><span class="lck">·</span> Advanced proprietary LaTeX templates</li>
+                        <li><span class="lck">·</span> Job-description resume matching</li>
+                        <li><span class="lck">·</span> LinkedIn profile extraction</li>
+                        <li><span class="lck">·</span> High-availability AWS ECS + CDN infrastructure</li>
+                        <li><span class="lck">·</span> Priority support &amp; SLA</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section>
+        <div class="section-inner">
+            <span class="section-tag">Tech Stack</span>
+            <h2 class="section-title">Modern, proven technologies</h2>
+            <p class="section-sub" style="margin-bottom:2rem;">Everything is well-documented and widely adopted.</p>
+            <div class="tech-pills">
+                <span class="tech-pill"><span class="dot" style="background:#61dafb;"></span>React 18</span>
+                <span class="tech-pill"><span class="dot" style="background:#009688;"></span>FastAPI</span>
+                <span class="tech-pill"><span class="dot" style="background:#3776ab;"></span>Python 3.11</span>
+                <span class="tech-pill"><span class="dot" style="background:#4285f4;"></span>Google Gemini AI</span>
+                <span class="tech-pill"><span class="dot" style="background:#3ecf8e;"></span>Supabase</span>
+                <span class="tech-pill"><span class="dot" style="background:#06b6d4;"></span>Tailwind CSS</span>
+                <span class="tech-pill"><span class="dot" style="background:#e0763f;"></span>LaTeX / pdflatex</span>
+                <span class="tech-pill"><span class="dot" style="background:#2496ed;"></span>Docker</span>
+                <span class="tech-pill"><span class="dot" style="background:#ff9900;"></span>AWS ECS Fargate</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- GITHUB CTA -->
+    <section class="cta-section">
+        <div class="section-inner">
+            <h2 class="section-title">Star us on GitHub</h2>
+            <p class="section-sub">
+                HugPDF is built in public. Read the code, self-host it, open issues, or contribute a pull request —
+                every contribution is welcome.
+            </p>
+            <a class="github-cta" href="https://github.com/i-am-sarath/hug-pdf" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                github.com/i-am-sarath/hug-pdf
+            </a>
+            <p class="star-note">MIT Licensed · Open Core · Contributions welcome</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <p>
+                Made with care by
+                <a href="https://github.com/i-am-sarath" target="_blank" rel="noopener">@i-am-sarath</a>
+                &nbsp;·&nbsp;
+                <a href="https://github.com/i-am-sarath/hug-pdf" target="_blank" rel="noopener">GitHub</a>
+                &nbsp;·&nbsp;
+                <a href="https://github.com/i-am-sarath/hug-pdf/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+                &nbsp;·&nbsp;
+                <a href="https://github.com/i-am-sarath/hug-pdf/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a>
+            </p>
+        </div>
+    </footer>
+
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 </body>
